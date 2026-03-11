@@ -174,55 +174,55 @@
 
 ### Design Tokens
 
-- [x] T100 [DS] Configure Tailwind with custom color palette: Deep Obsidian (#0B0E14), Electric Mint (#00FFC2), Laboratory Amber (#FFB800), Slate Grey (#1A1F26)
-- [x] T101 [DS] Define CSS custom properties in globals.css for glassmorphism effects (blur, opacity, backdrop-filter)
-- [x] T102 [DS] Configure typography scale with Inter/Geist variable fonts
-- [x] T103 [DS] Define spacing system scale (4px, 8px, 16px, 24px, 32px, 48px)
-- [x] T104 [DS] Define border-radius scale with 12px-16px for tactile buttons
-- [x] T105 [DS] Configure z-index layering system for modals, dropdowns, tooltips
-- [x] T106 [DS] Define shadow system for tactile feedback (subtle, medium, elevated)
+- [ ] T100 [DS] Configure Tailwind with custom color palette: Deep Obsidian (#0B0E14), Electric Mint (#00FFC2), Laboratory Amber (#FFB800), Slate Grey (#1A1F26)
+- [ ] T101 [DS] Define CSS custom properties in globals.css for glassmorphism effects (blur, opacity, backdrop-filter)
+- [ ] T102 [DS] Configure typography scale with Inter/Geist variable fonts
+- [ ] T103 [DS] Define spacing system scale (4px, 8px, 16px, 24px, 32px, 48px)
+- [ ] T104 [DS] Define border-radius scale with 12px-16px for tactile buttons
+- [ ] T105 [DS] Configure z-index layering system for modals, dropdowns, tooltips
+- [ ] T106 [DS] Define shadow system for tactile feedback (subtle, medium, elevated)
 
 ### Core Components
 
-- [x] T107 [DS] Update Button component with tactile shadows and rounded corners
-- [x] T108 [DS] Update Card component with glassmorphism surface effect
-- [x] T109 [DS] Update Input component with focus states and error styling
-- [x] T110 [DS] Create Badge component with status glow effects
-- [x] T111 [DS] Create StatusIndicator component with bloom/glow animations for steeping states
+- [ ] T107 [DS] Update Button component with tactile shadows and rounded corners
+- [ ] T108 [DS] Update Card component with glassmorphism surface effect
+- [ ] T109 [DS] Update Input component with focus states and error styling
+- [ ] T110 [DS] Create Badge component with status glow effects
+- [ ] T111 [DS] Create StatusIndicator component with bloom/glow animations for steeping states
 
 ### Feature Components
 
-- [x] T112 [DS] Create BeakerWidget component for real-time bottle filling visualization
-- [x] T113 [DS] Create CollapsibleSidebar component with icon-only mode
-- [x] T114 [DS] Create FocusMode overlay for batch mixing sessions
-- [x] T115 [DS] Create LiquidProgress component with liquid-fill animation
+- [ ] T112 [DS] Create BeakerWidget component for real-time bottle filling visualization
+- [ ] T113 [DS] Create CollapsibleSidebar component with icon-only mode
+- [ ] T114 [DS] Create FocusMode overlay for batch mixing sessions
+- [ ] T115 [DS] Create LiquidProgress component with liquid-fill animation
 
 ### Layout & Pages
 
-- [x] T116 [DS] Update dashboard layout with collapsible sidebar
-- [x] T117 [DS] Implement Focus Mode toggle logic in batch mixing page
-- [x] T118 [DS] Apply glassmorphism effects to all container components
-- [x] T119 [DS] Configure responsive breakpoints for tablet-first design
+- [ ] T116 [DS] Update dashboard layout with collapsible sidebar
+- [ ] T117 [DS] Implement Focus Mode toggle logic in batch mixing page
+- [ ] T118 [DS] Apply glassmorphism effects to all container components
+- [ ] T119 [DS] Configure responsive breakpoints for tablet-first design
 
 ### Animation & Interaction
 
-- [x] T120 [DS] Define transition durations for all interactive elements
-- [x] T121 [DS] Create liquid animation keyframes for progress indicators
-- [x] T122 [DS] Create glow pulse animation for status indicators
-- [x] T123 [DS] Implement reduced-motion preferences for accessibility
-- [x] T124 [DS] Add touch-friendly spacing for tablet interactions
+- [ ] T120 [DS] Define transition durations for all interactive elements
+- [ ] T121 [DS] Create liquid animation keyframes for progress indicators
+- [ ] T122 [DS] Create glow pulse animation for status indicators
+- [ ] T123 [DS] Implement reduced-motion preferences for accessibility
+- [ ] T124 [DS] Add touch-friendly spacing for tablet interactions
 
 ### Accessibility
 
-- [x] T125 [DS] Ensure color contrast ratios meet WCAG AA for all text
-- [x] T126 [DS] Add focus indicators for keyboard navigation
-- [x] T127 [DS] Add aria-labels to icon-only buttons and status indicators
+- [ ] T125 [DS] Ensure color contrast ratios meet WCAG AA for all text
+- [ ] T126 [DS] Add focus indicators for keyboard navigation
+- [ ] T127 [DS] Add aria-labels to icon-only buttons and status indicators
 
 ### Tests
 
-- [x] T128 [DS] Verify all color tokens are correctly applied in components
-- [x] T129 [DS] Test glassmorphism fallback for unsupported browsers
-- [x] T130 [DS] Test reduced-motion preferences are respected
+- [ ] T128 [DS] Verify all color tokens are correctly applied in components
+- [ ] T129 [DS] Test glassmorphism fallback for unsupported browsers
+- [ ] T130 [DS] Test reduced-motion preferences are respected
 
 ---
 
@@ -234,23 +234,23 @@
 
 ### Implementation
 
-- [x] T021 [US1] Create Ingredient model service in lib/db/repositories/ingredient.ts
-- [x] T022 [US1] Create Recipe model service in lib/db/repositories/recipe.ts with versioning logic
-- [x] T023 [US1] Create RecipeIngredient model service in lib/db/repositories/recipe-ingredient.ts
-- [x] T024 [US1] Build recipe list page in app/(dashboard)/recipes/page.tsx with search and filters
-- [x] T025 [US1] Create recipe form component in components/recipes/recipe-form.tsx with react-hook-form + zod
-- [x] T026 [US1] Build recipe create page in app/(dashboard)/recipes/create/page.tsx
-- [x] T027 [US1] Build recipe detail page in app/(dashboard)/recipes/[id]/page.tsx with version history
-- [x] T028 [US1] Build recipe edit page in app/(dashboard)/recipes/[id]/edit/page.tsx (creates new version)
-- [x] T029 [US1] Create recipe API routes: GET/POST /api/recipes, GET/PATCH/DELETE /api/recipes/[id]
-- [x] T030 [US1] Implement recipe version retrieval API: GET /api/recipes/[id]/versions
-- [x] T082 [US1] Add confirmation dialog for recipe delete action
+- [ ] T021 [US1] Create Ingredient model service in lib/db/repositories/ingredient.ts
+- [ ] T022 [US1] Create Recipe model service in lib/db/repositories/recipe.ts with versioning logic
+- [ ] T023 [US1] Create RecipeIngredient model service in lib/db/repositories/recipe-ingredient.ts
+- [ ] T024 [US1] Build recipe list page in app/(dashboard)/recipes/page.tsx with search and filters
+- [ ] T025 [US1] Create recipe form component in components/recipes/recipe-form.tsx with react-hook-form + zod
+- [ ] T026 [US1] Build recipe create page in app/(dashboard)/recipes/create/page.tsx
+- [ ] T027 [US1] Build recipe detail page in app/(dashboard)/recipes/[id]/page.tsx with version history
+- [ ] T028 [US1] Build recipe edit page in app/(dashboard)/recipes/[id]/edit/page.tsx (creates new version)
+- [ ] T029 [US1] Create recipe API routes: GET/POST /api/recipes, GET/PATCH/DELETE /api/recipes/[id]
+- [ ] T030 [US1] Implement recipe version retrieval API: GET /api/recipes/[id]/versions
+- [ ] T082 [US1] Add confirmation dialog for recipe delete action
 
 ### Tests
 
-- [x] T083 [US1] Create unit tests for Recipe service in tests/unit/recipes.test.ts
-- [x] T084 [US1] Create unit tests for Ingredient service in tests/unit/ingredients.test.ts
-- [x] T085 [US1] Run recipe tests and fix failures
+- [ ] T083 [US1] Create unit tests for Recipe service in tests/unit/recipes.test.ts
+- [ ] T084 [US1] Create unit tests for Ingredient service in tests/unit/ingredients.test.ts
+- [ ] T085 [US1] Run recipe tests and fix failures
 
 ---
 
