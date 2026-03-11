@@ -1,0 +1,311 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                    String                 @id
+  name                  String
+  email                 String
+  emailVerified         Boolean                @default(false)
+  image                 String?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  sessions              Session[]
+  accounts              Account[]
+  password              String?
+  role                  UserRole               @default(technician)
+  storeId               String?                @map("store_id")
+  store                 Store?                 @relation("StoreUsers", fields: [storeId], references: [id])
+  recipes               Recipe[]
+  batches               Batch[]
+  inventoryTransactions InventoryTransaction[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verifications")
+}
+
+enum UserRole {
+  owner
+  technician
+  manager
+}
+
+enum RecipeStatus {
+  draft
+  active
+  archived
+}
+
+enum IngredientType {
+  pg
+  vg
+  nicotine
+  flavor
+  additive
+}
+
+enum BatchStatus {
+  pending
+  mixing
+  steeping
+  ready
+  completed
+  cancelled
+}
+
+enum LoyaltyTransactionType {
+  earn
+  redeem
+}
+
+enum ComplianceDocumentType {
+  tpd_report
+  traceability
+  quality
+}
+
+enum InventoryTransactionType {
+  receive
+  use
+  adjust
+  expire
+}
+
+model Store {
+  id                String             @id @default(uuid())
+  name              String
+  timezone          String
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  users             User[]             @relation("StoreUsers")
+  recipes           Recipe[]
+  batches           Batch[]
+  rawMaterials      RawMaterial[]
+  customers         Customer[]
+  complianceRecords ComplianceRecord[]
+
+  @@map("stores")
+}
+
+model Recipe {
+  id                    String             @id @default(uuid())
+  storeId               String             @map("store_id")
+  name                  String
+  version               Int                @default(1)
+  description           String?            @db.Text
+  steepingDurationHours Int                @map("steeping_duration_hours")
+  targetNicotineMg      Decimal            @map("target_nicotine_mg") @db.Decimal(5, 2)
+  targetPgRatio         Decimal            @map("target_pg_ratio") @db.Decimal(5, 2)
+  targetVgRatio         Decimal            @map("target_vg_ratio") @db.Decimal(5, 2)
+  status                RecipeStatus       @default(draft)
+  createdBy             String             @map("created_by")
+  createdAt             DateTime           @default(now()) @map("created_at")
+  updatedAt             DateTime           @updatedAt @map("updated_at")
+  store                 Store              @relation(fields: [storeId], references: [id])
+  creator               User               @relation(fields: [createdBy], references: [id])
+  ingredients           RecipeIngredient[]
+  batches               Batch[]
+
+  @@index([storeId, name])
+  @@map("recipes")
+}
+
+model Ingredient {
+  id                String             @id @default(uuid())
+  name              String
+  type              IngredientType
+  unit              String
+  description       String?            @db.Text
+  recipeIngredients RecipeIngredient[]
+  batchIngredients  BatchIngredient[]
+  rawMaterials      RawMaterial[]
+
+  @@map("ingredients")
+}
+
+model RecipeIngredient {
+  id           String     @id @default(uuid())
+  recipeId     String     @map("recipe_id")
+  ingredientId String     @map("ingredient_id")
+  targetAmount Decimal    @map("target_amount") @db.Decimal(10, 3)
+  orderIndex   Int        @map("order_index")
+  recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+
+  @@map("recipe_ingredients")
+}
+
+model RawMaterial {
+  id                    String                 @id @default(uuid())
+  storeId               String                 @map("store_id")
+  ingredientId          String                 @map("ingredient_id")
+  lotNumber             String?                @map("lot_number")
+  currentStock          Decimal                @default(0) @map("current_stock") @db.Decimal(10, 3)
+  unit                  String
+  reorderThreshold      Decimal                @map("reorder_threshold") @db.Decimal(10, 3)
+  costPerUnit           Decimal?               @map("cost_per_unit") @db.Decimal(10, 2)
+  supplier              String?
+  expiryDate            DateTime?              @map("expiry_date")
+  createdAt             DateTime               @default(now()) @map("created_at")
+  updatedAt             DateTime               @updatedAt @map("updated_at")
+  store                 Store                  @relation(fields: [storeId], references: [id])
+  ingredient            Ingredient             @relation(fields: [ingredientId], references: [id])
+  batchIngredients      BatchIngredient[]
+  inventoryTransactions InventoryTransaction[]
+
+  @@index([storeId, ingredientId])
+  @@map("raw_materials")
+}
+
+model Batch {
+  id                    String                 @id @default(uuid())
+  storeId               String                 @map("store_id")
+  recipeId              String                 @map("recipe_id")
+  recipeVersion         Int                    @map("recipe_version")
+  batchNumber           String                 @unique
+  status                BatchStatus            @default(pending)
+  startedAt             DateTime?              @map("started_at")
+  completedAt           DateTime?              @map("completed_at")
+  steepingStartedAt     DateTime?              @map("steeping_started_at")
+  steepingCompletedAt   DateTime?              @map("steeping_completed_at")
+  notes                 String?                @db.Text
+  createdBy             String                 @map("created_by")
+  createdAt             DateTime               @default(now()) @map("created_at")
+  updatedAt             DateTime               @updatedAt @map("updated_at")
+  store                 Store                  @relation(fields: [storeId], references: [id])
+  recipe                Recipe                 @relation(fields: [recipeId], references: [id])
+  creator               User                   @relation(fields: [createdBy], references: [id])
+  ingredients           BatchIngredient[]
+  complianceRecords     ComplianceRecord[]
+  inventoryTransactions InventoryTransaction[]
+
+  @@index([storeId, batchNumber])
+  @@index([status, steepingCompletedAt])
+  @@map("batches")
+}
+
+model BatchIngredient {
+  id            String       @id @default(uuid())
+  batchId       String       @map("batch_id")
+  ingredientId  String       @map("ingredient_id")
+  rawMaterialId String?      @map("raw_material_id")
+  actualAmount  Decimal      @map("actual_amount") @db.Decimal(10, 3)
+  targetAmount  Decimal      @map("target_amount") @db.Decimal(10, 3)
+  variance      Decimal      @map("variance") @db.Decimal(10, 3)
+  batch         Batch        @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  ingredient    Ingredient   @relation(fields: [ingredientId], references: [id])
+  rawMaterial   RawMaterial? @relation(fields: [rawMaterialId], references: [id])
+
+  @@map("batch_ingredients")
+}
+
+model Customer {
+  id            String               @id @default(uuid())
+  storeId       String               @map("store_id")
+  email         String?
+  phone         String?
+  name          String
+  loyaltyPoints Int                  @default(0) @map("loyalty_points")
+  createdAt     DateTime             @default(now()) @map("created_at")
+  updatedAt     DateTime             @updatedAt @map("updated_at")
+  store         Store                @relation(fields: [storeId], references: [id])
+  transactions  LoyaltyTransaction[]
+
+  @@map("customers")
+}
+
+model LoyaltyTransaction {
+  id          String                 @id @default(uuid())
+  customerId  String                 @map("customer_id")
+  type        LoyaltyTransactionType
+  points      Int
+  description String
+  createdAt   DateTime               @default(now()) @map("created_at")
+  customer    Customer               @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@map("loyalty_transactions")
+}
+
+model ComplianceRecord {
+  id           String                 @id @default(uuid())
+  batchId      String                 @map("batch_id")
+  storeId      String                 @map("store_id")
+  documentType ComplianceDocumentType @map("document_type")
+  content      Json
+  generatedAt  DateTime               @default(now()) @map("generated_at")
+  batch        Batch                  @relation(fields: [batchId], references: [id])
+  store        Store                  @relation(fields: [storeId], references: [id])
+
+  @@index([batchId, documentType])
+  @@map("compliance_records")
+}
+
+model InventoryTransaction {
+  id            String                   @id @default(uuid())
+  rawMaterialId String                   @map("raw_material_id")
+  batchId       String?                  @map("batch_id")
+  type          InventoryTransactionType
+  quantity      Decimal                  @db.Decimal(10, 3)
+  notes         String?                  @db.Text
+  createdBy     String?                  @map("created_by")
+  createdAt     DateTime                 @default(now()) @map("created_at")
+  rawMaterial   RawMaterial              @relation(fields: [rawMaterialId], references: [id])
+  batch         Batch?                   @relation(fields: [batchId], references: [id])
+  creator       User?                    @relation(fields: [createdBy], references: [id])
+
+  @@index([rawMaterialId, createdAt])
+  @@map("inventory_transactions")
+}
