@@ -3,26 +3,79 @@
 @plugin "tailwindcss-animate";
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 222.2 47.4% 11.2%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 84.2% 60.2%;
+  /* Primary Colors */
+  --color-obsidian: #0B0E14;
+  --color-mint: #00FFC2;
+  --color-amber: #FFB800;
+  --color-slate: #1A1F26;
+
+  /* Surface Colors */
+  --surface-card: #12161C;
+  --surface-elevated: #1A1F26;
+  --surface-modal: #1C222A;
+  --surface-dropdown: #161B22;
+
+  /* Glass Effect Properties */
+  --glass-blur: 12px;
+  --glass-opacity-light: 0.05;
+  --glass-opacity-medium: 0.1;
+  --glass-opacity-dark: 0.15;
+  --glass-border: rgba(255, 255, 255, 0.1);
+
+  /* Status Colors */
+  --color-success: #00FFC2;
+  --color-warning: #FFB800;
+  --color-error: #FF4757;
+  --color-info: #4DABF7;
+  --color-steeping: #FFB800;
+  --color-ready: #00FFC2;
+  --color-mixing: #4DABF7;
+
+  /* Design Tokens */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  --shadow-tactile-sm: 0 1px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-tactile: 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-tactile-md: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-tactile-lg: 0 8px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-glow-mint: 0 0 20px rgba(0, 255, 194, 0.3);
+  --shadow-glow-amber: 0 0 20px rgba(255, 184, 0, 0.3);
+
+  /* Typography */
+  --font-sans: 'Inter', 'Geist Sans', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'JetBrains Mono', monospace;
+
+  /* Transitions */
+  --transition-instant: 0ms;
+  --transition-fast: 100ms;
+  --transition-normal: 200ms;
+  --transition-slow: 300ms;
+  --transition-slower: 400ms;
+
+  /* Semantic tokens */
+  --background: 222 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 168 100% 50%;
+  --primary-foreground: 222 47% 11.2%;
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 217 33% 17%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 72% 50%;
   --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 222.2 84% 4.9%;
-  --radius: 0.5rem;
+  --border: 217 33% 17%;
+  --input: 217 33% 17%;
+  --ring: 168 100% 50%;
+  --radius: 12px;
 }
 
 @theme inline {
@@ -45,37 +98,241 @@
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
-  --radius-sm: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 6px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-  }
+* {
+  border-color: hsl(var(--border));
 }
 
 body {
-  background-color: hsl(var(--background));
+  background: linear-gradient(135deg, var(--color-obsidian) 0%, #0D1117 50%, var(--color-obsidian) 100%);
   color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+/* Glassmorphism 2.0 */
+.glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, var(--glass-opacity-light)) 0%,
+    rgba(255, 255, 255, var(--glass-opacity-medium)) 100%
+  );
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-medium {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Surface Colors */
+.surface-card {
+  background-color: var(--surface-card);
+}
+
+.surface-elevated {
+  background-color: var(--surface-elevated);
+}
+
+.surface-modal {
+  background-color: var(--surface-modal);
+}
+
+.surface-dropdown {
+  background-color: var(--surface-dropdown);
+}
+
+/* Glow Effects */
+.glow-mint {
+  box-shadow: var(--shadow-glow-mint);
+}
+
+.glow-amber {
+  box-shadow: var(--shadow-glow-amber);
+}
+
+.glow-text-mint {
+  text-shadow: 0 0 10px rgba(0, 255, 194, 0.5);
+}
+
+.glow-text-amber {
+  text-shadow: 0 0 10px rgba(255, 184, 0, 0.5);
+}
+
+/* Tactile Buttons */
+.tactile {
+  box-shadow: var(--shadow-tactile);
+  transition: all var(--transition-normal) ease;
+}
+
+.tactile:hover {
+  box-shadow: var(--shadow-tactile-md);
+  transform: translateY(-1px);
+}
+
+.tactile:active {
+  box-shadow: var(--shadow-tactile-sm);
+  transform: translateY(0);
+}
+
+/* Focus States */
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-obsidian), 0 0 0 4px var(--color-mint);
+}
+
+/* Liquid Animation for Progress */
+@keyframes liquid {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(-2px) scaleY(1.02); }
+}
+
+.liquid-animation {
+  animation: liquid 2s ease-in-out infinite;
+}
+
+/* Glow Pulse for Status Indicators */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: 0.8; filter: brightness(1.2); }
+}
+
+.glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Float Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Slide In Animation */
+@keyframes slide-in {
+  0% { transform: translateX(-10px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+.slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+/* Fade In Animation */
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+/* Scale In Animation */
+@keyframes scale-in {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.scale-in {
+  animation: scale-in 0.2s ease-out;
+}
+
+/* Wave Animation for Liquid Progress */
+@keyframes wave {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}
+
+.animate-wave {
+  animation: wave 1.5s linear infinite;
+}
+
+/* Bubble Animation for Beaker */
+@keyframes bubble {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100%) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.animate-bubble {
+  animation: bubble 1.5s ease-in infinite;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Touch-friendly spacing */
+@media (pointer: coarse) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-obsidian);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-slate);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2A3038;
+}
+
+/* Selection */
+::selection {
+  background: rgba(0, 255, 194, 0.3);
+  color: white;
 }

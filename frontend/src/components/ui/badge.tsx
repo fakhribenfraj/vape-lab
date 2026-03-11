@@ -4,17 +4,24 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-obsidian",
   {
     variants: {
       variant: {
         default:
-          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
+          "bg-mint/20 text-mint border border-mint/30",
         secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-surface-elevated text-muted-foreground border border-glass-border",
         destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground",
+          "bg-state-error/20 text-state-error border border-state-error/30",
+        outline: "text-foreground border border-glass-border bg-glass-light",
+        success: "bg-state-success/20 text-state-success border border-state-success/30 glow-mint-sm",
+        warning: "bg-amber/20 text-amber border border-amber/30 glow-amber-sm",
+        info: "bg-state-info/20 text-state-info border border-state-info/30",
+        steeping: "bg-amber/20 text-amber border border-amber/30 glow-amber-sm",
+        ready: "bg-state-success/20 text-state-success border border-state-success/30 glow-mint-sm",
+        mixing: "bg-state-info/20 text-state-info border border-state-info/30",
+        pending: "bg-surface-elevated text-muted-foreground border border-glass-border",
       },
     },
     defaultVariants: {
