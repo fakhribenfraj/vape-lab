@@ -10,17 +10,17 @@
 
 **Goal**: Initialize project with all dependencies and configuration
 
-- [ ] T001 Create Next.js 16 project with TypeScript: `npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"`
-- [ ] T002 Install dependencies: `pnpm add prisma @prisma/client @tanstack/react-query react-hook-form zod @hookform/resolvers better-auth`
-- [ ] T003 Install dev dependencies: `pnpm add -D prisma @types/node eslint-config-prettier prettier`
-- [ ] T004 Initialize Prisma: `pnpm prisma init`
-- [ ] T005 Configure prisma/schema.prisma with PostgreSQL datasource and all entity models from data-model.md
-- [ ] T006 Generate Prisma client: `pnpm prisma generate`
-- [ ] T007 Create .env.example with DATABASE_URL, BETTER_AUTH_SECRET, BETTER_AUTH_URL, NEXT_PUBLIC_APP_URL
-- [ ] T008 Set up lib/db/client.ts for Prisma singleton pattern
-- [ ] T009 Set up lib/db/index.ts for database utilities
-- [ ] T010 Install shadcn/ui: `pnpm dlx shadcn@latest init` and add required components (button, input, form, card, table, dialog, toast, badge, select)
-- [ ] T011 Configure TanStack Query provider in app/providers.tsx
+- [x] T001 Create Next.js 16 project with TypeScript: `npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"`
+- [x] T002 Install dependencies: `pnpm add prisma @prisma/client @tanstack/react-query react-hook-form zod @hookform/resolvers better-auth`
+- [x] T003 Install dev dependencies: `pnpm add -D prisma @types/node eslint-config-prettier prettier`
+- [x] T004 Initialize Prisma: `pnpm prisma init`
+- [x] T005 Configure prisma/schema.prisma with PostgreSQL datasource and all entity models from data-model.md
+- [x] T006 Generate Prisma client: `pnpm prisma generate`
+- [x] T007 Create .env.example with DATABASE_URL, BETTER_AUTH_SECRET, BETTER_AUTH_URL, NEXT_PUBLIC_APP_URL
+- [x] T008 Set up lib/db/client.ts for Prisma singleton pattern
+- [x] T009 Set up lib/db/index.ts for database utilities
+- [x] T010 Install shadcn/ui: `pnpm dlx shadcn@latest init` and add required components (button, input, form, card, table, dialog, toast, badge, select)
+- [x] T011 Configure TanStack Query provider in app/providers.tsx
 
 ---
 
@@ -28,15 +28,15 @@
 
 **Goal**: Core infrastructure required for all user stories
 
-- [ ] T012 [P] Configure better-auth in lib/auth/config.ts with username/password provider and RBAC
-- [ ] T013 [P] Create auth API routes in app/api/auth/[...all]/route.ts
-- [ ] T014 [P] Set up authentication hooks in hooks/use-auth.ts
+- [x] T012 [P] Configure better-auth in lib/auth/config.ts with username/password provider and RBAC
+- [x] T013 [P] Create auth API routes in app/api/auth/[...all]/route.ts
+- [x] T014 [P] Set up authentication hooks in hooks/use-auth.ts
 - [ ] T015 Create session middleware in middleware.ts for protected routes
-- [ ] T016 [P] Create auth layout in app/(auth)/layout.tsx with login/register pages
-- [ ] T017 Create dashboard layout in app/(dashboard)/layout.tsx with sidebar navigation
-- [ ] T018 Build global UI components: loading spinner, error boundary, empty state
-- [ ] T019 Create Zod validation schemas in lib/validation/index.ts for common types
-- [ ] T020 [P] Add base styles in globals.css for mobile-first responsive design
+- [x] T016 [P] Create auth layout in app/(auth)/layout.tsx with login/register pages
+- [x] T017 Create dashboard layout in app/(dashboard)/layout.tsx with sidebar navigation
+- [x] T018 Build global UI components: loading spinner, error boundary, empty state
+- [x] T019 Create Zod validation schemas in lib/validation/index.ts for common types
+- [x] T020 [P] Add base styles in globals.css for mobile-first responsive design
 
 ---
 
@@ -49,16 +49,16 @@
 ### Implementation
 
 - [ ] T021 [US1] Create Ingredient model service in lib/db/repositories/ingredient.ts
-- [ ] T022 [US1] Create Recipe model service in lib/db/repositories/recipe.ts with versioning logic
+- [x] T022 [US1] Create Recipe model service in lib/db/repositories/recipe.ts with versioning logic
 - [ ] T023 [US1] Create RecipeIngredient model service in lib/db/repositories/recipe-ingredient.ts
-- [ ] T024 [US1] Build recipe list page in app/(dashboard)/recipes/page.tsx with search and filters
-- [ ] T025 [US1] Create recipe form component in components/recipes/recipe-form.tsx with react-hook-form + zod
-- [ ] T026 [US1] Build recipe create page in app/(dashboard)/recipes/create/page.tsx
-- [ ] T027 [US1] Build recipe detail page in app/(dashboard)/recipes/[id]/page.tsx with version history
-- [ ] T028 [US1] Build recipe edit page in app/(dashboard)/recipes/[id]/edit/page.tsx (creates new version)
-- [ ] T029 [US1] Create recipe API routes: GET/POST /api/recipes, GET/PATCH/DELETE /api/recipes/[id]
-- [ ] T030 [US1] Implement recipe version retrieval API: GET /api/recipes/[id]/versions
-- [ ] T082 [US1] Add confirmation dialog for recipe delete action
+- [x] T024 [US1] Build recipe list page in app/(dashboard)/recipes/page.tsx with search and filters
+- [x] T025 [US1] Create recipe form component in components/recipes/recipe-form.tsx with react-hook-form + zod
+- [x] T026 [US1] Build recipe create page in app/(dashboard)/recipes/create/page.tsx
+- [x] T027 [US1] Build recipe detail page in app/(dashboard)/recipes/[id]/page.tsx with version history
+- [x] T028 [US1] Build recipe edit page in app/(dashboard)/recipes/[id]/edit/page.tsx (creates new version)
+- [x] T029 [US1] Create recipe API routes: GET/POST /api/recipes, GET/PATCH/DELETE /api/recipes/[id]
+- [x] T030 [US1] Implement recipe version retrieval API: GET /api/recipes/[id]/versions
+- [x] T082 [US1] Add confirmation dialog for recipe delete action
 
 ### Tests
 

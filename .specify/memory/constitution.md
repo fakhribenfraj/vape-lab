@@ -1,5 +1,18 @@
 # VaporLab Constitution
 
+<!--
+Sync Impact Report:
+- Version change: 1.0.0 → 1.1.0
+- Added principles:
+  - V. Test-Driven Development (TDD cycle, test-first approach)
+  - VI. Version Control Discipline (commit frequency, atomic commits, branch conventions)
+- Modified sections:
+  - Testing Discipline: Updated to reference TDD principles
+- Templates requiring updates:
+  - .specify/templates/tasks-template.md: ✅ Already includes TDD guidance and commit instructions
+  - .specify/templates/plan-template.md: ✅ No changes needed (constitution check references principles)
+-->
+
 ## Core Principles
 
 ### I. Code Quality
@@ -13,6 +26,12 @@ All user-facing interfaces MUST follow consistent patterns and conventions. Inte
 
 ### IV. Scalability
 Architecture decisions MUST consider future growth and load. Systems MUST be designed to scale horizontally where appropriate. Data models MUST support increasing volume and complexity. Performance requirements MUST be defined and validated against realistic projections. Infrastructure MUST support elastic scaling without code changes.
+
+### V. Test-Driven Development
+Tests MUST be written before implementation (TDD). The Red-Green-Refactor cycle MUST be followed: write failing test, implement minimal code to pass, then refactor. Unit tests MUST cover core business logic. Tests MUST be independent, repeatable, and fast. Test coverage thresholds MUST be maintained above defined levels.
+
+### VI. Version Control Discipline
+Changes MUST be committed frequently after completing each task or logical unit. Commit messages MUST be descriptive and follow conventional commit format. Each commit SHOULD represent a single, atomic change. Branch naming conventions MUST be followed. Pull requests MUST be kept small and focused.
 
 ## Additional Constraints
 
@@ -28,7 +47,7 @@ All public APIs MUST be documented. Architecture decisions MUST be recorded with
 All changes MUST undergo peer review before merging. Reviewers MUST verify alignment with constitution principles. Automated checks MUST pass before review is requested. At least one maintainer approval REQUIRED for merging.
 
 ### Testing Discipline
-Unit tests MUST cover core business logic. Integration tests MUST verify component interactions. End-to-end tests MUST validate critical user journeys. Test coverage thresholds MUST be maintained above defined levels.
+Unit tests MUST be written BEFORE implementation following TDD principles. Integration tests MUST verify component interactions. End-to-end tests MUST validate critical user journeys. Test coverage thresholds MUST be maintained above defined levels.
 
 ### Release Process
 Versioning MUST follow semantic versioning. Release notes MUST document all changes. Rollback procedures MUST be documented and tested. Deployment MUST be automated and reproducible.
@@ -37,4 +56,4 @@ Versioning MUST follow semantic versioning. Release notes MUST document all chan
 
 This constitution supersedes all other development practices. Amendments require documentation, approval from maintainers, and a migration plan if applicable. All PRs and reviews MUST verify compliance with these principles. Complexity deviations MUST be justified in writing and tracked.
 
-**Version**: 1.0.0 | **Ratified**: 2026-03-10 | **Last Amended**: 2026-03-10
+**Version**: 1.1.0 | **Ratified**: 2026-03-10 | **Last Amended**: 2026-03-11
