@@ -10,13 +10,23 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRecipes, useRecipeCounts } from "@/hooks/use-recipes";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useRecipes, useRecipeCounts, useDeleteRecipe } from "@/hooks/use-recipes";
 import { useSearchRecipes } from "@/hooks/use-recipes";
 import { useSession } from "@/hooks/use-auth";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function RecipesPage() {
+  const router = useRouter();
   const { data: session } = useSession();
   const { data: recipes } = useRecipes(session?.user?.storeId || "");
   const { data: counts } = useRecipeCounts(session?.user?.storeId || "");
@@ -25,8 +35,25 @@ export default function RecipesPage() {
     session?.user?.storeId || "",
     searchQuery,
   );
+  const deleteRecipe = useDeleteRecipe();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [recipeToDelete, setRecipeToDelete] = useState<{ id: string; name: string } | null>(null);
 
   const filteredRecipes = searchQuery ? searchResults : recipes;
+
+  const handleDeleteClick = (recipe: { id: string; name: string }) => {
+    setRecipeToDelete(recipe);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (recipeToDelete) {
+      await deleteRecipe.mutateAsync(recipeToDelete.id);
+      setDeleteDialogOpen(false);
+      setRecipeToDelete(null);
+      router.refresh();
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -137,6 +164,13 @@ export default function RecipesPage() {
                         <Button variant="outline" size="sm" asChild>
                           <Link href={`/recipes/${recipe.id}/edit`}>Edit</Link>
                         </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDeleteClick({ id: recipe.id, name: recipe.name })}
+                        >
+                          Delete
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
@@ -146,6 +180,29 @@ export default function RecipesPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Recipe</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete &quot;{recipeToDelete?.name}&quot;? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteConfirm}
+              disabled={deleteRecipe.isPending}
+            >
+              {deleteRecipe.isPending ? "Deleting..." : "Delete"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

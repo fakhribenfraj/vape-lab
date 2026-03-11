@@ -40,6 +40,64 @@
 
 ---
 
+## Phase 2.1: Design System Implementation
+
+**Goal**: Implement the High-Tech Apothecary design system with Glassmorphism 2.0, custom tokens, and components
+
+### Design Tokens
+
+- [ ] T100 [DS] Configure Tailwind with custom color palette: Deep Obsidian (#0B0E14), Electric Mint (#00FFC2), Laboratory Amber (#FFB800), Slate Grey (#1A1F26)
+- [ ] T101 [DS] Define CSS custom properties in globals.css for glassmorphism effects (blur, opacity, backdrop-filter)
+- [ ] T102 [DS] Configure typography scale with Inter/Geist variable fonts
+- [ ] T103 [DS] Define spacing system scale (4px, 8px, 16px, 24px, 32px, 48px)
+- [ ] T104 [DS] Define border-radius scale with 12px-16px for tactile buttons
+- [ ] T105 [DS] Configure z-index layering system for modals, dropdowns, tooltips
+- [ ] T106 [DS] Define shadow system for tactile feedback (subtle, medium, elevated)
+
+### Core Components
+
+- [ ] T107 [DS] Update Button component with tactile shadows and rounded corners
+- [ ] T108 [DS] Update Card component with glassmorphism surface effect
+- [ ] T109 [DS] Update Input component with focus states and error styling
+- [ ] T110 [DS] Create Badge component with status glow effects
+- [ ] T111 [DS] Create StatusIndicator component with bloom/glow animations for steeping states
+
+### Feature Components
+
+- [ ] T112 [DS] Create BeakerWidget component for real-time bottle filling visualization
+- [ ] T113 [DS] Create CollapsibleSidebar component with icon-only mode
+- [ ] T114 [DS] Create FocusMode overlay for batch mixing sessions
+- [ ] T115 [DS] Create LiquidProgress component with liquid-fill animation
+
+### Layout & Pages
+
+- [ ] T116 [DS] Update dashboard layout with collapsible sidebar
+- [ ] T117 [DS] Implement Focus Mode toggle logic in batch mixing page
+- [ ] T118 [DS] Apply glassmorphism effects to all container components
+- [ ] T119 [DS] Configure responsive breakpoints for tablet-first design
+
+### Animation & Interaction
+
+- [ ] T120 [DS] Define transition durations for all interactive elements
+- [ ] T121 [DS] Create liquid animation keyframes for progress indicators
+- [ ] T122 [DS] Create glow pulse animation for status indicators
+- [ ] T123 [DS] Implement reduced-motion preferences for accessibility
+- [ ] T124 [DS] Add touch-friendly spacing for tablet interactions
+
+### Accessibility
+
+- [ ] T125 [DS] Ensure color contrast ratios meet WCAG AA for all text
+- [ ] T126 [DS] Add focus indicators for keyboard navigation
+- [ ] T127 [DS] Add aria-labels to icon-only buttons and status indicators
+
+### Tests
+
+- [ ] T128 [DS] Verify all color tokens are correctly applied in components
+- [ ] T129 [DS] Test glassmorphism fallback for unsupported browsers
+- [ ] T130 [DS] Test reduced-motion preferences are respected
+
+---
+
 ## Phase 3: User Story 1 - E-Liquid Recipe Management
 
 **Goal**: Enable users to create, version, and search recipes
@@ -203,6 +261,8 @@ Phase 1 (Setup)
     │
     ├─► Phase 2 (Foundational)
     │       │
+    │       ├─► Phase 2.5 (Design System)
+    │       │
     │       ├─► Phase 3 (US1: Recipes)
     │       │
     │       ├─► Phase 4 (US2: Batches) ──► Phase 5 (US3: Inventory)
@@ -228,6 +288,10 @@ Phase 1 (Setup)
 | T031, T032, T033 | Batch repositories - can start together |
 | T042, T043, T044 | Inventory repositories - can start together |
 | T060, T061, T062 | Customer repositories - can start together |
+| T100-T106 | Design token setup - can run in parallel |
+| T107-T111 | Core component updates - can run in parallel |
+| T112-T115 | Feature components - can run in parallel |
+| T120-T124 | Animation tasks - can run in parallel |
 | T076, T077 | Linting can run in parallel |
 
 ---
@@ -248,8 +312,8 @@ Phase 1 (Setup)
 
 **Recommended MVP**: Phase 3 (User Story 1 - Recipe Management)
 
-- Includes: T001-T030
-- Core value: Users can create and version recipes
+- Includes: T001-T030, T100-T130
+- Core value: Users can create and version recipes with design system applied
 - Enables: Subsequent stories depend on recipe existence
 - Excluded: Batches, Inventory, Compliance, Customers (Phase 4+)
 
@@ -261,10 +325,11 @@ Phase 1 (Setup)
 |-------|------------|
 | Phase 1: Setup | 11 |
 | Phase 2: Foundational | 9 |
+| Phase 2.5: Design System | 31 |
 | Phase 3: US1 - Recipes | 14 |
 | Phase 4: US2 - Batches | 14 |
 | Phase 5: US3 - Inventory | 14 |
 | Phase 6: US4 - Compliance | 9 |
 | Phase 7: US5 - Customers | 13 |
 | Phase 8: Polish | 13 |
-| **Total** | **97** |
+| **Total** | **128** |

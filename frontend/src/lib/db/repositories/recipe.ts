@@ -91,14 +91,19 @@ export class RecipeService {
     });
   }
 
-  async findIngredientsByRecipes(recipeIds: string[]): Promise<RecipeIngredient[]> {
+  async findIngredientsByRecipes(
+    recipeIds: string[],
+  ): Promise<RecipeIngredient[]> {
     return prisma.recipeIngredient.findMany({
       where: { recipeId: { in: recipeIds } },
       orderBy: { orderIndex: "asc" },
     });
   }
 
-  async findByNameAndStore(storeId: string, name: string): Promise<Recipe | null> {
+  async findByNameAndStore(
+    storeId: string,
+    name: string,
+  ): Promise<Recipe | null> {
     return prisma.recipe.findFirst({
       where: { storeId, name },
       include: {
@@ -107,7 +112,10 @@ export class RecipeService {
     });
   }
 
-  async findLatestVersion(storeId: string, name: string): Promise<Recipe | null> {
+  async findLatestVersion(
+    storeId: string,
+    name: string,
+  ): Promise<Recipe | null> {
     return prisma.recipe.findFirst({
       where: { storeId, name },
       orderBy: { version: "desc" },
@@ -145,7 +153,7 @@ export class RecipeService {
       ingredientId: string;
       targetAmount: number;
       orderIndex: number;
-    }[]
+    }[],
   ): Promise<Recipe> {
     const recipe = await prisma.recipe.update({
       where: { id },
@@ -183,11 +191,11 @@ export class RecipeService {
       ingredientId: string;
       targetAmount: number;
       orderIndex: number;
-    }[]
+    }[],
   ): Promise<Recipe> {
     const originalRecipe = await this.findById(recipeId);
     if (!originalRecipe) {
-      throw new Error('Original recipe not found');
+      throw new Error("Original recipe not found");
     }
 
     const newVersion = originalRecipe.version + 1;
@@ -228,7 +236,7 @@ export class RecipeService {
   async searchRecipes(
     storeId: string,
     query: string,
-    limit: number = 10
+    limit: number = 10,
   ): Promise<Recipe[]> {
     return prisma.recipe.findMany({
       where: {
@@ -325,7 +333,10 @@ export class IngredientService {
     });
   }
 
-  async searchIngredients(query: string, limit: number = 10): Promise<Ingredient[]> {
+  async searchIngredients(
+    query: string,
+    limit: number = 10,
+  ): Promise<Ingredient[]> {
     return prisma.ingredient.findMany({
       where: {
         OR: [
