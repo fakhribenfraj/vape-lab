@@ -31,7 +31,7 @@
 - [x] T012 [P] Configure better-auth in lib/auth/config.ts with username/password provider and RBAC
 - [x] T013 [P] Create auth API routes in app/api/auth/[...all]/route.ts
 - [x] T014 [P] Set up authentication hooks in hooks/use-auth.ts
-- [ ] T015 Create session middleware in middleware.ts for protected routes
+- [x] T015 Create session middleware in proxy.ts for protected routes
 - [x] T016 [P] Create auth layout in app/(auth)/layout.tsx with login/register pages
 - [x] T017 Create dashboard layout in app/(dashboard)/layout.tsx with sidebar navigation
 - [x] T018 Build global UI components: loading spinner, error boundary, empty state
@@ -48,9 +48,9 @@
 
 ### Implementation
 
-- [ ] T021 [US1] Create Ingredient model service in lib/db/repositories/ingredient.ts
+- [x] T021 [US1] Create Ingredient model service in lib/db/repositories/ingredient.ts
 - [x] T022 [US1] Create Recipe model service in lib/db/repositories/recipe.ts with versioning logic
-- [ ] T023 [US1] Create RecipeIngredient model service in lib/db/repositories/recipe-ingredient.ts
+- [x] T023 [US1] Create RecipeIngredient model service in lib/db/repositories/recipe-ingredient.ts
 - [x] T024 [US1] Build recipe list page in app/(dashboard)/recipes/page.tsx with search and filters
 - [x] T025 [US1] Create recipe form component in components/recipes/recipe-form.tsx with react-hook-form + zod
 - [x] T026 [US1] Build recipe create page in app/(dashboard)/recipes/create/page.tsx
@@ -62,9 +62,9 @@
 
 ### Tests
 
-- [ ] T083 [US1] Create unit tests for Recipe service in tests/unit/recipes.test.ts
-- [ ] T084 [US1] Create unit tests for Ingredient service in tests/unit/ingredients.test.ts
-- [ ] T085 [US1] Run recipe tests and fix failures
+- [x] T083 [US1] Create unit tests for Recipe service in tests/unit/recipes.test.ts
+- [x] T084 [US1] Create unit tests for Ingredient service in tests/unit/ingredients.test.ts
+- [x] T085 [US1] Run recipe tests and fix failures
 
 ---
 
