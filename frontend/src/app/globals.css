@@ -1,19 +1,17 @@
 @import "tailwindcss";
 
-@plugin "tailwindcss-animate";
-
 :root {
   /* Primary Colors */
-  --color-obsidian: #0B0E14;
-  --color-mint: #00FFC2;
-  --color-amber: #FFB800;
-  --color-slate: #1A1F26;
+  --color-obsidian: #0b0e14;
+  --color-mint: #00ffc2;
+  --color-amber: #ffb800;
+  --color-slate: #1a1f26;
 
   /* Surface Colors */
-  --surface-card: #12161C;
-  --surface-elevated: #1A1F26;
-  --surface-modal: #1C222A;
-  --surface-dropdown: #161B22;
+  --surface-card: #12161c;
+  --surface-elevated: #1a1f26;
+  --surface-modal: #1c222a;
+  --surface-dropdown: #161b22;
 
   /* Glass Effect Properties */
   --glass-blur: 12px;
@@ -23,13 +21,13 @@
   --glass-border: rgba(255, 255, 255, 0.1);
 
   /* Status Colors */
-  --color-success: #00FFC2;
-  --color-warning: #FFB800;
-  --color-error: #FF4757;
-  --color-info: #4DABF7;
-  --color-steeping: #FFB800;
-  --color-ready: #00FFC2;
-  --color-mixing: #4DABF7;
+  --color-success: #00ffc2;
+  --color-warning: #ffb800;
+  --color-error: #ff4757;
+  --color-info: #4dabf7;
+  --color-steeping: #ffb800;
+  --color-ready: #00ffc2;
+  --color-mixing: #4dabf7;
 
   /* Design Tokens */
   --radius-sm: 6px;
@@ -37,16 +35,20 @@
   --radius-lg: 12px;
   --radius-xl: 16px;
 
-  --shadow-tactile-sm: 0 1px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  --shadow-tactile: 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  --shadow-tactile-md: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  --shadow-tactile-lg: 0 8px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-tactile-sm:
+    0 1px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-tactile:
+    0 2px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-tactile-md:
+    0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-tactile-lg:
+    0 8px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --shadow-glow-mint: 0 0 20px rgba(0, 255, 194, 0.3);
   --shadow-glow-amber: 0 0 20px rgba(255, 184, 0, 0.3);
 
   /* Typography */
-  --font-sans: 'Inter', 'Geist Sans', system-ui, sans-serif;
-  --font-mono: 'Geist Mono', 'JetBrains Mono', monospace;
+  --font-sans: "Inter", "Geist Sans", system-ui, sans-serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", monospace;
 
   /* Transitions */
   --transition-instant: 0ms;
@@ -107,9 +109,152 @@
 * {
   border-color: hsl(var(--border));
 }
+@import "tailwindcss";
 
+@theme {
+  /* --- Colors --- */
+  --color-obsidian-50: #2a2f38;
+  --color-obsidian-100: #232830;
+  --color-obsidian-200: #1c2128;
+  --color-obsidian-300: #161a20;
+  --color-obsidian-400: #101318;
+  --color-obsidian-500: #0b0e14;
+  --color-obsidian-600: #080a0d;
+  --color-obsidian-700: #050607;
+  --color-obsidian-800: #020303;
+  --color-obsidian-900: #000000;
+  --color-obsidian: var(--color-obsidian-500);
+
+  --color-mint-50: #ccfff6;
+  --color-mint-100: #b3ffe9;
+  --color-mint-200: #80ffd6;
+  --color-mint-300: #4dffc3;
+  --color-mint-400: #1affb0;
+  --color-mint-500: #00ffc2;
+  --color-mint-600: #00cc9a;
+  --color-mint-700: #009973;
+  --color-mint-800: #00664b;
+  --color-mint-900: #003324;
+  --color-mint: var(--color-mint-500);
+
+  --color-amber-50: #fff5d6;
+  --color-amber-100: #fff0bc;
+  --color-amber-200: #ffe680;
+  --color-amber-300: #ffdc4d;
+  --color-amber-400: #ffd21a;
+  --color-amber-500: #ffb800;
+  --color-amber-600: #cc9300;
+  --color-amber-700: #996e00;
+  --color-amber-800: #664a00;
+  --color-amber-900: #332500;
+  --color-amber: var(--color-amber-500);
+
+  --color-slate-50: #4a5159;
+  --color-slate-60: #3d444d;
+  --color-slate-70: #30373f;
+  --color-slate-80: #232a31;
+  --color-slate-90: #1a1f26;
+  --color-slate-100: #161b22;
+  --color-slate: var(--color-slate-90);
+
+  --color-glass-light: rgba(255, 255, 255, 0.05);
+  --color-glass-medium: rgba(255, 255, 255, 0.1);
+  --color-glass-dark: rgba(255, 255, 255, 0.15);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+
+  --color-surface-card: #12161c;
+  --color-surface-elevated: #1a1f26;
+  --color-surface-modal: #1c222a;
+  --color-surface-dropdown: #161b22;
+
+  --color-state-success: #00ffc2;
+  --color-state-warning: #ffb800;
+  --color-state-error: #ff4757;
+  --color-state-info: #4dabf7;
+  --color-state-steeping: #ffb800;
+  --color-state-ready: #00ffc2;
+  --color-state-mixing: #4dabf7;
+
+  /* --- Typography --- */
+  --font-sans: "Inter", "Geist Sans", system-ui, sans-serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", monospace;
+
+  --text-display-xl: 3.5rem;
+  --text-display-xl--line-height: 1.1;
+  --text-display-xl--font-weight: 700;
+
+  --text-display-lg: 2.5rem;
+  --text-display-lg--line-height: 1.2;
+  --text-display-lg--font-weight: 700;
+
+  --text-display-md: 1.875rem;
+  --text-display-md--line-height: 1.3;
+  --text-display-md--font-weight: 600;
+
+  --text-display-sm: 1.5rem;
+  --text-display-sm--line-height: 1.4;
+  --text-display-sm--font-weight: 600;
+
+  --text-heading-xl: 1.25rem;
+  --text-heading-xl--line-height: 1.4;
+  --text-heading-xl--font-weight: 600;
+
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.6;
+
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+  --text-label--font-weight: 500;
+  --text-label--letter-spacing: 0.05em;
+
+  /* --- Spacing & Radius --- */
+  --spacing-0_5: 2px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-4: 16px;
+  --spacing-10: 40px;
+  --spacing-20: 80px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* --- Shadows --- */
+  --shadow-tactile:
+    0 2px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-glow-mint: 0 0 20px rgba(0, 255, 194, 0.3);
+
+  /* --- Custom Animations --- */
+  --animate-liquid: liquid 2s ease-in-out infinite;
+  --animate-float: float 3s ease-in-out infinite;
+
+  @keyframes liquid {
+    0%,
+    100% {
+      transform: translateY(0) scaleY(1);
+    }
+    50% {
+      transform: translateY(-2px) scaleY(1.02);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
 body {
-  background: linear-gradient(135deg, var(--color-obsidian) 0%, #0D1117 50%, var(--color-obsidian) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-obsidian) 0%,
+    #0d1117 50%,
+    var(--color-obsidian) 100%
+  );
   color: hsl(var(--foreground));
   font-family: var(--font-sans);
   min-height: 100vh;
@@ -201,13 +346,20 @@ body {
 /* Focus States */
 .focus-ring {
   outline: none;
-  box-shadow: 0 0 0 2px var(--color-obsidian), 0 0 0 4px var(--color-mint);
+  box-shadow:
+    0 0 0 2px var(--color-obsidian),
+    0 0 0 4px var(--color-mint);
 }
 
 /* Liquid Animation for Progress */
 @keyframes liquid {
-  0%, 100% { transform: translateY(0) scaleY(1); }
-  50% { transform: translateY(-2px) scaleY(1.02); }
+  0%,
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(-2px) scaleY(1.02);
+  }
 }
 
 .liquid-animation {
@@ -216,8 +368,15 @@ body {
 
 /* Glow Pulse for Status Indicators */
 @keyframes glow-pulse {
-  0%, 100% { opacity: 1; filter: brightness(1); }
-  50% { opacity: 0.8; filter: brightness(1.2); }
+  0%,
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.8;
+    filter: brightness(1.2);
+  }
 }
 
 .glow-pulse {
@@ -226,8 +385,13 @@ body {
 
 /* Float Animation */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .float-animation {
@@ -236,8 +400,14 @@ body {
 
 /* Slide In Animation */
 @keyframes slide-in {
-  0% { transform: translateX(-10px); opacity: 0; }
-  100% { transform: translateX(0); opacity: 1; }
+  0% {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .slide-in {
@@ -246,8 +416,12 @@ body {
 
 /* Fade In Animation */
 @keyframes fade-in {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .fade-in {
@@ -256,8 +430,14 @@ body {
 
 /* Scale In Animation */
 @keyframes scale-in {
-  0% { transform: scale(0.95); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .scale-in {
@@ -266,8 +446,12 @@ body {
 
 /* Wave Animation for Liquid Progress */
 @keyframes wave {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0%); }
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
 }
 
 .animate-wave {
@@ -328,7 +512,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2A3038;
+  background: #2a3038;
 }
 
 /* Selection */

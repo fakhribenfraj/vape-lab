@@ -189,7 +189,8 @@ pending → mixing → steeping → ready → completed
 
 ---
 
-### InventoryTransaction
+### InventoryTransaction (Existing)
+
 | Field | Type | Constraints | Description |
 |-------|------|-------------|-------------|
 | id | UUID | PK | Unique identifier |
@@ -200,6 +201,117 @@ pending → mixing → steeping → ready → completed
 | notes | text | nullable | Transaction notes |
 | created_by | UUID | FK → User | Created by user |
 | created_at | timestamp | not null | Creation timestamp |
+
+---
+
+### Supplier
+
+| Field | Type | Constraints | Description |
+|-------|------|-------------|-------------|
+| id | UUID | PK | Unique identifier |
+| store_id | UUID | FK → Store | Owner store |
+| name | string | not null | Supplier name |
+| contact_name | string | nullable | Contact person |
+| email | string | nullable | Email address |
+| phone | string | nullable | Phone number |
+| address | text | nullable | Full address |
+| lead_time_days | integer | nullable | Typical delivery time |
+| notes | text | nullable | Additional notes |
+| created_at | timestamp | not null | Creation timestamp |
+| updated_at | timestamp | not null | Last update timestamp |
+
+---
+
+### PurchaseOrder
+
+| Field | Type | Constraints | Description |
+|-------|------|-------------|-------------|
+| id | UUID | PK | Unique identifier |
+| store_id | UUID | FK → Store | Owner store |
+| supplier_id | UUID | FK → Supplier | Supplier |
+| order_number | string | not null, unique | Human-readable order ID |
+| status | enum | not null | 'draft', 'ordered', 'partial', 'received', 'cancelled' |
+| expected_date | date | nullable | Expected delivery date |
+| received_date | date | nullable | Actual receipt date |
+| total_cost | decimal | not null | Total order cost |
+| notes | text | nullable | Order notes |
+| created_by | UUID | FK → User | Created by user |
+| created_at | timestamp | not null | Creation timestamp |
+| updated_at | timestamp | not null | Last update timestamp |
+
+---
+
+### PurchaseOrderItem
+
+| Field | Type | Constraints | Description |
+|-------|------|-------------|-------------|
+| id | UUID | PK | Unique identifier |
+| purchase_order_id | UUID | FK → PurchaseOrder | Parent order |
+| raw_material_id | UUID | FK → RawMaterial | Material ordered |
+| quantity | decimal | not null | Quantity ordered |
+| unit_cost | decimal | not null | Cost per unit |
+| quantity_received | decimal | not null, default 0 | Quantity received |
+| created_at | timestamp | not null | Creation timestamp |
+
+---
+
+### Product (Finished Goods)
+
+| Field | Type | Constraints | Description |
+|-------|------|-------------|-------------|
+| id | UUID | PK | Unique identifier |
+| store_id | UUID | FK → Store | Owner store |
+| batch_id | UUID | FK → Batch | Source batch |
+| name | string | not null | Product name |
+| sku | string | nullable | Stock keeping unit |
+| volume_ml | decimal | not null | Volume per bottle |
+| unit_price | decimal | not null | Selling price |
+| cost | decimal | not null | Cost to produce |
+| current_stock | integer | not null, default 0 | Available quantity |
+| reorder_threshold | integer | not null | Low stock alert level |
+| status | enum | not null | 'active', 'discontinued' |
+| created_at | timestamp | not null | Creation timestamp |
+| updated_at | timestamp | not null | Last update timestamp |
+
+---
+
+### Sale
+
+| Field | Type | Constraints | Description |
+|-------|------|-------------|-------------|
+| id | UUID | PK | Unique identifier |
+| store_id | UUID | FK → Store | Owner store |
+| customer_id | UUID | FK → Customer | Customer (nullable for guest) |
+| sale_number | string | not null, unique | Receipt/transaction ID |
+| status | enum | not null | 'completed', 'refunded', 'voided' |
+| subtotal | decimal | not null | Sum of line items |
+| discount_amount | decimal | not null, default 0 | Total discount applied |
+| loyalty_discount | decimal | not null, default 0 | Discount from points redemption |
+| tax_amount | decimal | not null, default 0 | Tax amount |
+| total | decimal | not null | Final total |
+| total_cost | decimal | not null | Cost of goods sold |
+| profit | decimal | not null | Total - total_cost |
+| payment_method | string | nullable | Payment method used |
+| notes | text | nullable | Sale notes |
+| created_by | UUID | FK → User | Created by user |
+| created_at | timestamp | not null | Creation timestamp |
+| updated_at | timestamp | not null | Last update timestamp |
+
+---
+
+### SaleItem
+
+| Field | Type | Constraints | Description |
+|-------|------|-------------|-------------|
+| id | UUID | PK | Unique identifier |
+| sale_id | UUID | FK → Sale | Parent sale |
+| product_id | UUID | FK → Product | Product sold |
+| quantity | integer | not null | Quantity sold |
+| unit_price | decimal | not null | Price per unit |
+| unit_cost | decimal | not null | Cost per unit |
+| discount | decimal | not null, default 0 | Line item discount |
+| line_total | decimal | not null | Quantity × unit_price - discount |
+| profit | decimal | not null | line_total - (quantity × unit_cost) |
 
 ---
 
@@ -218,7 +330,15 @@ Store
 ├── RawMaterials (1:N)
 ├── Customers (1:N)
 │   └── LoyaltyTransactions (1:N)
-└── ComplianceRecords (1:N)
+├── ComplianceRecords (1:N)
+├── Suppliers (1:N)
+│   └── PurchaseOrders (1:N)
+│       └── PurchaseOrderItems (1:N)
+│           └── RawMaterials (N:1)
+├── Products (1:N)
+│   └── SaleItems (1:N)
+│       └── Sales (N:1)
+│           └── Customers (N:1)
 ```
 
 ---
@@ -231,6 +351,14 @@ Store
 - `raw_materials(store_id, ingredient_id)` - Inventory lookup
 - `inventory_transactions(raw_material_id, created_at)` - Stock history
 - `compliance_records(batch_id, document_type)` - Compliance lookups
+- `suppliers(store_id, name)` - Supplier lookup
+- `purchase_orders(store_id, supplier_id, status)` - Purchase order lookups
+- `purchase_orders(store_id, order_number)` - Order number lookup
+- `products(store_id, sku)` - Product lookup by SKU
+- `products(store_id, status)` - Active products lookup
+- `sales(store_id, customer_id, created_at)` - Sales history
+- `sales(store_id, created_at)` - Sales by date
+- `sale_items(sale_id, product_id)` - Sale item lookups
 
 ---
 
