@@ -1,8 +1,8 @@
 "use client";
 
+import { ArrowLeft, Plus } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowLeft, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,7 +26,7 @@ export default function SalePage() {
 
   const total = useMemo(
     () => items.reduce((acc, item) => acc + item.qty * item.unitPrice, 0),
-    [items]
+    [items],
   );
 
   function handleAddItem() {
@@ -76,7 +76,9 @@ export default function SalePage() {
           <CardContent className="space-y-4">
             <div className="grid gap-4 lg:grid-cols-2">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-400">Customer</label>
+                <label className="text-sm font-medium text-slate-400">
+                  Customer
+                </label>
                 <Input
                   placeholder="Customer name"
                   value={customer}
@@ -84,7 +86,9 @@ export default function SalePage() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-400">Notes</label>
+                <label className="text-sm font-medium text-slate-400">
+                  Notes
+                </label>
                 <Input
                   placeholder="Optional notes"
                   value={notes}
@@ -114,8 +118,8 @@ export default function SalePage() {
                         const value = event.target.value;
                         setItems((prev) =>
                           prev.map((i) =>
-                            i.id === item.id ? { ...i, product: value } : i
-                          )
+                            i.id === item.id ? { ...i, product: value } : i,
+                          ),
                         );
                       }}
                     />
@@ -127,8 +131,10 @@ export default function SalePage() {
                           const value = Number(event.target.value);
                           setItems((prev) =>
                             prev.map((i) =>
-                              i.id === item.id ? { ...i, qty: Math.max(1, value) } : i
-                            )
+                              i.id === item.id
+                                ? { ...i, qty: Math.max(1, value) }
+                                : i,
+                            ),
                           );
                         }}
                         placeholder="Qty"
@@ -142,8 +148,8 @@ export default function SalePage() {
                             prev.map((i) =>
                               i.id === item.id
                                 ? { ...i, unitPrice: Math.max(0, value) }
-                                : i
-                            )
+                                : i,
+                            ),
                           );
                         }}
                         placeholder="Unit price"
@@ -151,7 +157,7 @@ export default function SalePage() {
                     </div>
                   </div>
                   <div className="text-sm text-slate-400">
-                    Subtotal: ${ (item.qty * item.unitPrice).toFixed(2) }
+                    Subtotal: ${(item.qty * item.unitPrice).toFixed(2)}
                   </div>
                 </div>
               ))}
@@ -172,8 +178,9 @@ export default function SalePage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-slate-400">
-              This is a dummy sale form for UI preview. In a full implementation, the
-              sale would be persisted and inventory deducted automatically.
+              This is a dummy sale form for UI preview. In a full
+              implementation, the sale would be persisted and inventory deducted
+              automatically.
             </p>
             <div className="rounded-xl border border-glass-border bg-surface-card/60 p-4">
               <div className="flex items-center justify-between text-sm text-slate-400">

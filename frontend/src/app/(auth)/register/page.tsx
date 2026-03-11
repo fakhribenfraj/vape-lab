@@ -23,7 +23,7 @@ export default function RegisterPage() {
     email: string;
     password: string;
     name: string;
-    role: "" | "owner" | "technician" | "manager";
+    role: "owner" | "technician" | "manager";
   };
 
   const {
@@ -36,7 +36,7 @@ export default function RegisterPage() {
       email: "",
       password: "",
       name: "",
-      role: "",
+      role: "owner",
     },
   });
 
@@ -98,7 +98,6 @@ export default function RegisterPage() {
                     {...register("role")}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <option value="">Select a role</option>
                     <option value="owner">Owner</option>
                     <option value="technician">Technician</option>
                     <option value="manager">Manager</option>
