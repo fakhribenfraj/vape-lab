@@ -8,9 +8,9 @@ datasource db {
 }
 
 model User {
-  id                    String                 @id
+  id                    String                 @id @default(uuid())
   name                  String
-  email                 String
+  email                 String                 @unique
   emailVerified         Boolean                @default(false)
   image                 String?
   createdAt             DateTime               @default(now())
@@ -24,15 +24,16 @@ model User {
   recipes               Recipe[]
   batches               Batch[]
   inventoryTransactions InventoryTransaction[]
+  purchaseOrders        PurchaseOrder[]
+  sales                 Sale[]
 
-  @@unique([email])
   @@map("user")
 }
 
 model Session {
-  id        String   @id
+  id        String   @id @default(uuid())
   expiresAt DateTime
-  token     String
+  token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   ipAddress String?
@@ -40,13 +41,12 @@ model Session {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
   @@index([userId])
   @@map("session")
 }
 
 model Account {
-  id                    String    @id
+  id                    String    @id @default(uuid())
   accountId             String
   providerId            String
   userId                String
@@ -66,7 +66,7 @@ model Account {
 }
 
 model Verification {
-  id         String   @id
+  id         String   @id @default(uuid())
   identifier String
   value      String
   expiresAt  DateTime
@@ -75,72 +75,6 @@ model Verification {
 
   @@index([identifier])
   @@map("verifications")
-}
-
-enum UserRole {
-  owner
-  technician
-  manager
-}
-
-enum RecipeStatus {
-  draft
-  active
-  archived
-}
-
-enum IngredientType {
-  pg
-  vg
-  nicotine
-  flavor
-  additive
-}
-
-enum BatchStatus {
-  pending
-  mixing
-  steeping
-  ready
-  completed
-  cancelled
-}
-
-enum LoyaltyTransactionType {
-  earn
-  redeem
-}
-
-enum ComplianceDocumentType {
-  tpd_report
-  traceability
-  quality
-}
-
-enum InventoryTransactionType {
-  receive
-  use
-  adjust
-  expire
-}
-
-enum PurchaseOrderStatus {
-  draft
-  ordered
-  partial
-  received
-  cancelled
-}
-
-enum ProductStatus {
-  active
-  discontinued
-}
-
-enum SaleStatus {
-  completed
-  refunded
-  voided
 }
 
 model Store {
@@ -227,6 +161,7 @@ model RawMaterial {
   ingredient            Ingredient             @relation(fields: [ingredientId], references: [id])
   batchIngredients      BatchIngredient[]
   inventoryTransactions InventoryTransaction[]
+  purchaseOrderItems    PurchaseOrderItem[]
 
   @@index([storeId, ingredientId])
   @@map("raw_materials")
@@ -253,6 +188,7 @@ model Batch {
   ingredients           BatchIngredient[]
   complianceRecords     ComplianceRecord[]
   inventoryTransactions InventoryTransaction[]
+  products              Product[]
 
   @@index([storeId, batchNumber])
   @@index([status, steepingCompletedAt])
@@ -274,6 +210,99 @@ model BatchIngredient {
   @@map("batch_ingredients")
 }
 
+model Supplier {
+  id             String          @id @default(uuid())
+  storeId        String          @map("store_id")
+  name           String
+  contactName    String?         @map("contact_name")
+  email          String?
+  phone          String?
+  address        String?         @db.Text
+  leadTimeDays   Int?            @map("lead_time_days")
+  notes          String?         @db.Text
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  store          Store           @relation(fields: [storeId], references: [id])
+  purchaseOrders PurchaseOrder[]
+
+  @@index([storeId, name])
+  @@map("suppliers")
+}
+
+model PurchaseOrder {
+  id           String              @id @default(uuid())
+  storeId      String              @map("store_id")
+  supplierId   String              @map("supplier_id")
+  orderNumber  String              @unique
+  status       PurchaseOrderStatus @default(draft)
+  expectedDate DateTime?           @map("expected_date")
+  receivedDate DateTime?           @map("received_date")
+  totalCost    Decimal             @map("total_cost") @db.Decimal(10, 2)
+  notes        String?             @db.Text
+  createdBy    String?             @map("created_by")
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
+  supplier     Supplier            @relation(fields: [supplierId], references: [id])
+  creator      User?               @relation(fields: [createdBy], references: [id])
+  items        PurchaseOrderItem[]
+
+  @@index([storeId, supplierId, status])
+  @@map("purchase_orders")
+}
+
+model PurchaseOrderItem {
+  id               String        @id @default(uuid())
+  purchaseOrderId  String        @map("purchase_order_id")
+  rawMaterialId    String        @map("raw_material_id")
+  quantity         Decimal       @db.Decimal(10, 3)
+  unitCost         Decimal       @map("unit_cost") @db.Decimal(10, 2)
+  quantityReceived Decimal       @default(0) @map("quantity_received") @db.Decimal(10, 3)
+  createdAt        DateTime      @default(now()) @map("created_at")
+  purchaseOrder    PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  rawMaterial      RawMaterial   @relation(fields: [rawMaterialId], references: [id])
+
+  @@map("purchase_order_items")
+}
+
+model InventoryTransaction {
+  id            String                   @id @default(uuid())
+  rawMaterialId String                   @map("raw_material_id")
+  batchId       String?                  @map("batch_id")
+  type          InventoryTransactionType
+  quantity      Decimal                  @db.Decimal(10, 3)
+  notes         String?                  @db.Text
+  createdBy     String?                  @map("created_by")
+  createdAt     DateTime                 @default(now()) @map("created_at")
+  rawMaterial   RawMaterial              @relation(fields: [rawMaterialId], references: [id])
+  batch         Batch?                   @relation(fields: [batchId], references: [id])
+  creator       User?                    @relation(fields: [createdBy], references: [id])
+
+  @@index([rawMaterialId, createdAt])
+  @@map("inventory_transactions")
+}
+
+model Product {
+  id               String        @id @default(uuid())
+  storeId          String        @map("store_id")
+  batchId          String?       @map("batch_id")
+  name             String
+  sku              String?       @unique
+  volumeMl         Decimal       @map("volume_ml") @db.Decimal(10, 1)
+  unitPrice        Decimal       @map("unit_price") @db.Decimal(10, 2)
+  cost             Decimal       @db.Decimal(10, 2)
+  currentStock     Int           @default(0) @map("current_stock")
+  reorderThreshold Int           @default(10) @map("reorder_threshold")
+  status           ProductStatus @default(active)
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+  store            Store         @relation(fields: [storeId], references: [id])
+  batch            Batch?        @relation(fields: [batchId], references: [id])
+  saleItems        SaleItem[]
+
+  @@index([storeId, status])
+  @@map("products")
+}
+
 model Customer {
   id            String               @id @default(uuid())
   storeId       String               @map("store_id")
@@ -285,8 +314,54 @@ model Customer {
   updatedAt     DateTime             @updatedAt @map("updated_at")
   store         Store                @relation(fields: [storeId], references: [id])
   transactions  LoyaltyTransaction[]
+  sales         Sale[]
 
   @@map("customers")
+}
+
+model Sale {
+  id              String     @id @default(uuid())
+  storeId         String     @map("store_id")
+  customerId      String?    @map("customer_id")
+  saleNumber      String     @unique
+  status          SaleStatus @default(completed)
+  subtotal        Decimal    @db.Decimal(10, 2)
+  discountAmount  Decimal    @default(0) @map("discount_amount") @db.Decimal(10, 2)
+  loyaltyDiscount Decimal    @default(0) @map("loyalty_discount") @db.Decimal(10, 2)
+  taxAmount       Decimal    @default(0) @map("tax_amount") @db.Decimal(10, 2)
+  total           Decimal    @db.Decimal(10, 2)
+  totalCost       Decimal    @map("total_cost") @db.Decimal(10, 2)
+  profit          Decimal    @db.Decimal(10, 2)
+  paymentMethod   String?    @map("payment_method")
+  notes           String?    @db.Text
+  createdBy       String?    @map("created_by")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  store           Store      @relation(fields: [storeId], references: [id])
+  customer        Customer?  @relation(fields: [customerId], references: [id])
+  creator         User?      @relation(fields: [createdBy], references: [id])
+  items           SaleItem[]
+
+  @@index([storeId, customerId, createdAt])
+  @@index([storeId, createdAt])
+  @@map("sales")
+}
+
+model SaleItem {
+  id        String  @id @default(uuid())
+  saleId    String  @map("sale_id")
+  productId String  @map("product_id")
+  quantity  Int
+  unitPrice Decimal @map("unit_price") @db.Decimal(10, 2)
+  unitCost  Decimal @map("unit_cost") @db.Decimal(10, 2)
+  discount  Decimal @default(0) @db.Decimal(10, 2)
+  lineTotal Decimal @map("line_total") @db.Decimal(10, 2)
+  profit    Decimal @db.Decimal(10, 2)
+  sale      Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@index([saleId, productId])
+  @@map("sale_items")
 }
 
 model LoyaltyTransaction {
@@ -315,141 +390,68 @@ model ComplianceRecord {
   @@map("compliance_records")
 }
 
-model InventoryTransaction {
-  id            String                   @id @default(uuid())
-  rawMaterialId String                   @map("raw_material_id")
-  batchId       String?                  @map("batch_id")
-  type          InventoryTransactionType
-  quantity      Decimal                  @db.Decimal(10, 3)
-  notes         String?                  @db.Text
-  createdBy     String?                  @map("created_by")
-  createdAt     DateTime                 @default(now()) @map("created_at")
-  rawMaterial   RawMaterial              @relation(fields: [rawMaterialId], references: [id])
-  batch         Batch?                   @relation(fields: [batchId], references: [id])
-  creator       User?                    @relation(fields: [createdBy], references: [id])
-
-  @@index([rawMaterialId, createdAt])
-  @@map("inventory_transactions")
+enum UserRole {
+  owner
+  technician
+  manager
 }
 
-model Supplier {
-  id            String           @id @default(uuid())
-  storeId       String           @map("store_id")
-  name          String
-  contactName   String?          @map("contact_name")
-  email         String?
-  phone         String?
-  address       String?          @db.Text
-  leadTimeDays  Int?             @map("lead_time_days")
-  notes         String?           @db.Text
-  createdAt     DateTime         @default(now()) @map("created_at")
-  updatedAt     DateTime         @updatedAt @map("updated_at")
-  store         Store            @relation(fields: [storeId], references: [id])
-  purchaseOrders PurchaseOrder[]
-
-  @@index([storeId, name])
-  @@map("suppliers")
+enum RecipeStatus {
+  draft
+  active
+  archived
 }
 
-model PurchaseOrder {
-  id             String               @id @default(uuid())
-  storeId        String               @map("store_id")
-  supplierId     String               @map("supplier_id")
-  orderNumber    String               @unique
-  status         PurchaseOrderStatus @default(draft)
-  expectedDate   DateTime?            @map("expected_date")
-  receivedDate   DateTime?            @map("received_date")
-  totalCost      Decimal              @map("total_cost") @db.Decimal(10, 2)
-  notes          String?              @db.Text
-  createdBy     String?              @map("created_by")
-  createdAt     DateTime             @default(now()) @map("created_at")
-  updatedAt     DateTime             @updatedAt @map("updated_at")
-  store         Store                @relation(fields: [storeId], references: [id])
-  supplier      Supplier             @relation(fields: [supplierId], references: [id])
-  creator       User?                @relation(fields: [createdBy], references: [id])
-  items         PurchaseOrderItem[]
-
-  @@index([storeId, supplierId, status])
-  @@map("purchase_orders")
+enum IngredientType {
+  pg
+  vg
+  nicotine
+  flavor
+  additive
 }
 
-model PurchaseOrderItem {
-  id                String        @id @default(uuid())
-  purchaseOrderId   String        @map("purchase_order_id")
-  rawMaterialId     String        @map("raw_material_id")
-  quantity          Decimal       @db.Decimal(10, 3)
-  unitCost          Decimal       @map("unit_cost") @db.Decimal(10, 2)
-  quantityReceived  Decimal       @default(0) @map("quantity_received") @db.Decimal(10, 3)
-  createdAt         DateTime      @default(now()) @map("created_at")
-  purchaseOrder     PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
-  rawMaterial       RawMaterial   @relation(fields: [rawMaterialId], references: [id])
-
-  @@map("purchase_order_items")
+enum BatchStatus {
+  pending
+  mixing
+  steeping
+  ready
+  completed
+  cancelled
 }
 
-model Product {
-  id                String        @id @default(uuid())
-  storeId           String        @map("store_id")
-  batchId           String?       @map("batch_id")
-  name              String
-  sku               String?       @unique
-  volumeMl          Decimal       @map("volume_ml") @db.Decimal(10, 1)
-  unitPrice         Decimal       @map("unit_price") @db.Decimal(10, 2)
-  cost              Decimal       @db.Decimal(10, 2)
-  currentStock      Int           @default(0) @map("current_stock")
-  reorderThreshold  Int           @default(10) @map("reorder_threshold")
-  status            ProductStatus @default(active)
-  createdAt         DateTime      @default(now()) @map("created_at")
-  updatedAt         DateTime      @updatedAt @map("updated_at")
-  store             Store         @relation(fields: [storeId], references: [id])
-  batch             Batch?        @relation(fields: [batchId], references: [id])
-  saleItems         SaleItem[]
-
-  @@index([storeId, status])
-  @@map("products")
+enum LoyaltyTransactionType {
+  earn
+  redeem
 }
 
-model Sale {
-  id              String      @id @default(uuid())
-  storeId         String      @map("store_id")
-  customerId      String?     @map("customer_id")
-  saleNumber      String      @unique
-  status          SaleStatus  @default(completed)
-  subtotal        Decimal     @db.Decimal(10, 2)
-  discountAmount  Decimal     @default(0) @map("discount_amount") @db.Decimal(10, 2)
-  loyaltyDiscount Decimal     @default(0) @map("loyalty_discount") @db.Decimal(10, 2)
-  taxAmount       Decimal     @default(0) @map("tax_amount") @db.Decimal(10, 2)
-  total           Decimal     @db.Decimal(10, 2)
-  totalCost       Decimal     @map("total_cost") @db.Decimal(10, 2)
-  profit          Decimal     @db.Decimal(10, 2)
-  paymentMethod   String?     @map("payment_method")
-  notes           String?     @db.Text
-  createdBy       String?     @map("created_by")
-  createdAt       DateTime    @default(now()) @map("created_at")
-  updatedAt       DateTime    @updatedAt @map("updated_at")
-  store           Store       @relation(fields: [storeId], references: [id])
-  customer        Customer?   @relation(fields: [customerId], references: [id])
-  creator         User?       @relation(fields: [createdBy], references: [id])
-  items           SaleItem[]
-
-  @@index([storeId, customerId, createdAt])
-  @@index([storeId, createdAt])
-  @@map("sales")
+enum ComplianceDocumentType {
+  tpd_report
+  traceability
+  quality
 }
 
-model SaleItem {
-  id         String   @id @default(uuid())
-  saleId     String   @map("sale_id")
-  productId  String   @map("product_id")
-  quantity   Int
-  unitPrice  Decimal  @map("unit_price") @db.Decimal(10, 2)
-  unitCost   Decimal  @map("unit_cost") @db.Decimal(10, 2)
-  discount   Decimal  @default(0) @db.Decimal(10, 2)
-  lineTotal  Decimal  @map("line_total") @db.Decimal(10, 2)
-  profit     Decimal  @db.Decimal(10, 2)
-  sale       Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
-  product    Product  @relation(fields: [productId], references: [id])
+enum InventoryTransactionType {
+  receive
+  use
+  adjust
+  expire
+}
 
-  @@index([saleId, productId])
-  @@map("sale_items")
+enum PurchaseOrderStatus {
+  draft
+  ordered
+  partial
+  received
+  cancelled
+}
+
+enum ProductStatus {
+  active
+  discontinued
+}
+
+enum SaleStatus {
+  completed
+  refunded
+  voided
 }
